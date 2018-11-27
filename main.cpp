@@ -14,14 +14,34 @@
 int main()
 {
 	unsigned *EPage,*p;
-	EPage = (unsigned*)VirtualAlloc(NULL, PageSize, MEM_COMMIT, PAGE_READWRITE);
+	EPage = (unsigned*)malloc(PageSize);
+
 	readln(EPage);
 
-	p = StrFormat—(EPage);
-	p=StrFormatMD(EPage);
+	if (BracketAccordance(EPage) == false)
+	{
+		fprintf(stderr, "Fatal Error: the discrepancy in the number of opening and closing brackets\n please, try again\n");
+
+		system("pause");
+		//getchar();
+
+		system("cls");
+
+		free(EPage);
+		main();
+		return 0;
+	}
+	
+	OddBracketsDeleter(EPage);
+
+	p= StrFormatC(EPage);
+	p= StrFormatMD(EPage);
 	p= StrFormatPM(EPage);
 
-	FinalRepalce(EPage, 4.5,2);
+	OddBracketsDeleter(EPage);
+
+	FinalRepalce(EPage,6);
+
 
 	
 	printf("\n");

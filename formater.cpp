@@ -193,7 +193,7 @@ unsigned* StrFormatPM(unsigned* StrCurrentAddress)
 
 
 
-unsigned* StrFormat—(unsigned* StrCurrentAddress)
+unsigned* StrFormatC(unsigned* StrCurrentAddress)
 {
 	pointers position;
 
@@ -214,7 +214,7 @@ unsigned* StrFormat—(unsigned* StrCurrentAddress)
 	{
 		if (*(char*)position.future == '(')
 		{
-			position.future = StrFormat—((unsigned*)((char*)position.future + 1));
+			position.future = StrFormatC((unsigned*)((char*)position.future + 1));
 		}
 
 		if ((*(char*)position.future == '^') or (*(char*)position.future == '+') or (*(char*)position.future == '-') or (*(char*)position.future == '*') or (*(char*)position.future == '/') or (*(char*)position.future == '\n') or (*(char*)position.future == ')'))

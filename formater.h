@@ -7,4 +7,4 @@ unsigned* StrFormatMD(unsigned* StrCurrentAddress);
 unsigned* StrFormatPM(unsigned* StrCurrentAddress);
 
 //распознавание показательных и степенных функций
-unsigned* StrFormatС(unsigned* StrCurrentAddress);
+unsigned* StrFormatC(unsigned* StrCurrentAddress);
