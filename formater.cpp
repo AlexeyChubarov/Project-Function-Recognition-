@@ -264,4 +264,43 @@ unsigned* StrFormatC(unsigned* StrCurrentAddress)
 	}
 }
 
+//распознавания стандартного вида числа
+void StdTypeOfNumberRecognize(unsigned* StrCurrentAddress)
+{
+	int i = 0;
+	while (true)
+	{
+		if (*((char*)StrCurrentAddress + i) == 10)break;
 
+		if (
+			((*((char*)StrCurrentAddress + i) == 'e') or (*((char*)StrCurrentAddress + i) == 'E'))
+			and
+			((*((char*)StrCurrentAddress + i - 1) <= '9') and (*((char*)StrCurrentAddress + i - 1) >= '0'))
+			and
+			((*((char*)StrCurrentAddress + i + 2) <= '9') and (*((char*)StrCurrentAddress + i + 2) >= '0'))
+			)
+		{
+			replace((unsigned*)((char*)StrCurrentAddress + i), 1, "*10^(", sizeof("*10^(") - 1);
+			i += 6;
+			while (true)
+			{if ((*((char*)StrCurrentAddress + i) == '+')or (*((char*)StrCurrentAddress + i) == '-')or(*((char*)StrCurrentAddress + i) == '*') or (*((char*)StrCurrentAddress + i) == '/') or (*((char*)StrCurrentAddress + i) == '^') or (*((char*)StrCurrentAddress + i) == ')')or (*((char*)StrCurrentAddress + i) == '\n'))
+				{
+					add((unsigned*)((char*)StrCurrentAddress + i),")",1);
+					break;
+				}
+
+				if (*((char*)StrCurrentAddress + i) == 10)
+				{
+					i--;
+					break;
+				}
+						
+
+				inc(i);
+			}
+
+		}
+
+		inc(i);
+	}
+}

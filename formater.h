@@ -8,3 +8,6 @@ unsigned* StrFormatPM(unsigned* StrCurrentAddress);
 
 //распознавание показательных и степенных функций
 unsigned* StrFormatC(unsigned* StrCurrentAddress);
+
+//распознавания стандартного вида числа
+void StdTypeOfNumberRecognize(unsigned* StrCurrentAddress);

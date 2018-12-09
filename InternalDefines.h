@@ -4,5 +4,8 @@
 #define and &&
 #define or ||
 #define xor ^^
+#define COMMAND_STACK_MAX 100
+#define CONSTANT_STACK_MAX 200
+
 
 constexpr auto PageSize = 4906;
