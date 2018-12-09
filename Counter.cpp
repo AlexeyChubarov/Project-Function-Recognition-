@@ -53,7 +53,7 @@ control* CommandStackCreator(unsigned* StrCurrentAddress)
 		else
 			
 			if (*((char*)StrCurrentAddress + i) == '(')
-		{
+		    {
 			//арифметические операции
 			if ((buf[0] == 'p') and (buf[1] == 'l') and (buf[2] == 'u')and (buf[3] = 's'))
 			{
@@ -132,7 +132,8 @@ control* CommandStackCreator(unsigned* StrCurrentAddress)
 											PushToCommand(CommandStack, { (unsigned*)0x20008000, 1 });
 											j = -1;
 										}
-						
+										else
+			
 			//тригонометрические функции
 	
 							if ((buf[0] == 's') and (buf[1] == 'i') and (buf[2] == 'n'))
@@ -184,7 +185,8 @@ control* CommandStackCreator(unsigned* StrCurrentAddress)
 													PushToCommand(CommandStack, { (unsigned*)0x30006000, 1 });
 													j = -1;
 												}
-
+												else
+			
 			//обратные тригонометрические функции
 			if (
 				((buf[0] == 'a') and (buf[1] == 'r') and (buf[2] == 'c') and (buf[3] == 's') and (buf[4] = 'i') and (buf[5] = 'n'))
@@ -228,7 +230,7 @@ control* CommandStackCreator(unsigned* StrCurrentAddress)
 			
 
 			
-		} 
+		    } 
 		else 
 			buf[j] = *((char*)StrCurrentAddress + i);
 
