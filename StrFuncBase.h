@@ -1,13 +1,19 @@
 #pragma once
 
 //функция считывает символы до перевода строки
-unsigned* readln(unsigned* StrCurrentAddress);
+void readln(unsigned** StrCurrentAddress,int* SizeOfPage);
+
+//функция считывает символы до перевода строки из фаила
+void freadln(FILE* file, unsigned** StrCurrentAddress,int* SizeOfPage);
 
 //функция считывает определённое количество символов
 void read(unsigned* StrCurrentAddress, unsigned quantity);
 
 //функция выводит символы до перевода строки
 void writeln(unsigned* StrCurrentAddress);
+
+//функция выводит символы до перевода строки в фаил
+void fwriteln(FILE* file, unsigned* StrCurrentAddress);
 
 //функция выводит определённое количество символов строки
 void write(unsigned* StrCurrentAddress, unsigned quantity);

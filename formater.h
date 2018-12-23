@@ -10,4 +10,7 @@ unsigned* StrFormatPM(unsigned* StrCurrentAddress);
 unsigned* StrFormatC(unsigned* StrCurrentAddress);
 
 //распознавания стандартного вида числа
-void StdTypeOfNumberRecognize(unsigned* StrCurrentAddress);
+void StdTypeOfNumberRecognize(unsigned** StrCurrentAddress, int* SizeOfPage);
+
+//функция перевода в постфиксную запись
+int PostfixTransfer(unsigned** StrCurrentAddress, int*PageSize,unsigned accurancy);

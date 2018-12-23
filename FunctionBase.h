@@ -1,16 +1,25 @@
 #pragma once
 
-auto plus(double a, double b);
+double plus(double a, double b);
 
-auto minus(double a, double b);
+double minus(double a, double b);
 
-auto multiply(double a, double b);
+double multiply(double a, double b);
 
-auto divide(double a, double b);
+double divide(double a, double b);
 
-int entier(double a);
+double log(double a, double x);
 
-auto log(double a, double x);
+double sqr(double x);
 
-auto exp(double a, double x);
+double cot(double x);
 
+double sec(double x);
+
+double csc(double x);
+
+double acot(double x);
+
+double coth(double x);
+
+double acoth(double x);

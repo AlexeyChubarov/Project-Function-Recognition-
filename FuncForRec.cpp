@@ -8,92 +8,69 @@
 #include "FunctionBase.h"
 #include "formater.h"
 #include "FuncForRec.h"
+#include "StackFuncBase.h"
+#include "Counter.h"
+#include "Integral.h"
+#include "FuncForMemControl.h"
+#include "MainFunctions.h"
 
-void FinalRepalce(unsigned* StrCurrentAddress,int accurancy)
+void FinalRepalce(unsigned** StrCurrentAddress,int* SizeOfPage, unsigned accurancy)
 {
 	unsigned i = 0;
 	char buf[25];
 	unsigned res;
 
-	//res = sprintf_s(buf, "%.*lf",accurancy, number);
 
 	while (true)
 	{
-		if (*((char*)StrCurrentAddress + i) == 10)return;
+		if (*((char*)(*StrCurrentAddress) + i) == 10)return;
 
-		if ((*((char*)StrCurrentAddress + i) == '(')and (*((char*)StrCurrentAddress + i + 1) == ','))
-			add((unsigned*)((char*)StrCurrentAddress + i+1),"0",sizeof("0")-1);
+		if ((*((char*)(*StrCurrentAddress) + i) == '(') and (*((char*)(*StrCurrentAddress) + i + 1) == ','))
+			add((unsigned*)((char*)(*StrCurrentAddress) + i + 1), "0", sizeof("0") - 1);
 
-		/* if ( 
-			(*((char*)StrCurrentAddress + i) == 'x') 
-			and
-			(((*((char*)StrCurrentAddress + i-1) == '(') and (*((char*)StrCurrentAddress + i + 1) == ','))
-				or((*((char*)StrCurrentAddress + i - 1) == ',') and (*((char*)StrCurrentAddress + i + 1) == ')'))
-			    or ((*((char*)StrCurrentAddress + i - 1) == '(') and (*((char*)StrCurrentAddress + i + 1) == ')')))
-			)
-
-		{
-			replace((unsigned*)((char*)StrCurrentAddress + i), 1, buf, res);
-		} */
-
+		
 		if (
-			(*((char*)StrCurrentAddress + i) == 'e')
+			(*((char*)(*StrCurrentAddress) + i) == 'e')
 			and
-			(((*((char*)StrCurrentAddress + i - 1) == '(') and (*((char*)StrCurrentAddress + i + 1) == ','))
-				or ((*((char*)StrCurrentAddress + i - 1) == ',') and (*((char*)StrCurrentAddress + i + 1) == ')'))
-				or ((*((char*)StrCurrentAddress + i - 1) == '(') and (*((char*)StrCurrentAddress + i + 1) == ')')))
+			(((*((char*)(*StrCurrentAddress) + i - 1) == '(') and (*((char*)(*StrCurrentAddress) + i + 1) == ','))
+				or ((*((char*)(*StrCurrentAddress) + i - 1) == ',') and (*((char*)(*StrCurrentAddress) + i + 1) == ')'))
+				or ((*((char*)(*StrCurrentAddress) + i - 1) == '(') and (*((char*)(*StrCurrentAddress) + i + 1) == ')')))
 			)
 		{
-			res= sprintf_s(buf, "%.*lf",accurancy,2.718281828459045);
+			if (CheckEOPage(*StrCurrentAddress) <= (accurancy+2))
+				*SizeOfPage = SizeUp(StrCurrentAddress, *SizeOfPage);
 
-			replace((unsigned*)((char*)StrCurrentAddress + i), 1, buf, res);
+			res = sprintf_s(buf, "%.*lf", accurancy, 2.718281828459045);
+
+			replace((unsigned*)((char*)(*StrCurrentAddress) + i), 1, buf, res);
 
 			//res = sprintf_s(buf, "%.*lf",accurancy, number);
 		}
 
 		if (
-			((*((char*)StrCurrentAddress + i) == 'p')or(*((char*)StrCurrentAddress + i) == 'P'))
+			((*((char*)(*StrCurrentAddress) + i) == 'p') or (*((char*)(*StrCurrentAddress) + i) == 'P'))
 			and
-			((*((char*)StrCurrentAddress + i+1) == 'i') or (*((char*)StrCurrentAddress + i+1) == 'I'))
+			((*((char*)(*StrCurrentAddress) + i + 1) == 'i') or (*((char*)(*StrCurrentAddress) + i + 1) == 'I'))
 			and
-			(((*((char*)StrCurrentAddress + i - 1) == '(') and (*((char*)StrCurrentAddress + i + 2) == ','))
-				or ((*((char*)StrCurrentAddress + i - 1) == ',') and (*((char*)StrCurrentAddress + i + 2) == ')'))
-				or ((*((char*)StrCurrentAddress + i - 1) == '(') and (*((char*)StrCurrentAddress + i + 2) == ')')))
+			(((*((char*)(*StrCurrentAddress) + i - 1) == '(') and (*((char*)(*StrCurrentAddress) + i + 2) == ','))
+				or ((*((char*)(*StrCurrentAddress) + i - 1) == ',') and (*((char*)(*StrCurrentAddress)+ i + 2) == ')'))
+				or ((*((char*)(*StrCurrentAddress) + i - 1) == '(') and (*((char*)(*StrCurrentAddress) + i + 2) == ')')))
 			)
 		{
+			if (CheckEOPage(*StrCurrentAddress) <= accurancy + 1)
+				*SizeOfPage = SizeUp(StrCurrentAddress, *SizeOfPage);
+
 			res = sprintf_s(buf, "%.*lf", accurancy, 3.14159265358979323);
 
-			replace((unsigned*)((char*)StrCurrentAddress + i), 2, buf, res);
+			replace((unsigned*)((char*)(*StrCurrentAddress) + i), 2, buf, res);
 
-	
+
 		}
 
 		inc(i);
 	}
 }
 
-//подсчёт значения
-/* double counter(unsigned* StrCurrentAddress)
-{
-	char buf[256];
-	int i = 0;
-	double result=0.;
-
-	while (true)
-	{
-		if (*(char*)StrCurrentAddress + i == 10)return result;
-
-		buf[i] = *((char*)StrCurrentAddress + i);
-
-		if (buf[i] == '(')counter((unsigned*)((char*)StrCurrentAddress + i + 1));
-
-
-
-		inc(i);
-	}
-
-}
-*/
 
 
 struct BracketsIndicator
@@ -172,6 +149,22 @@ bool BracketAccordance(unsigned* StrCurrentAddress)
 			else return false;
 		}
 
+		inc(i);
+	}
+}
+
+void OddSpacesDeleter(unsigned* StrCurrentAddress)
+{
+	int i = 0;
+	
+	while (true)
+	{
+		if (*((char*)StrCurrentAddress + i) == 10)break;
+		if ((*((char*)StrCurrentAddress + i) == ' ') or (*((char*)StrCurrentAddress + i) == '\t'))
+		{
+			del((unsigned*)((char*)StrCurrentAddress + i), 1);
+			i--;
+		}
 		inc(i);
 	}
 }

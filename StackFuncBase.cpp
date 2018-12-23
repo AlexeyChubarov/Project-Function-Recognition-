@@ -9,6 +9,10 @@
 #include "formater.h"
 #include "FuncForRec.h"
 #include "StackFuncBase.h"
+#include "Counter.h"
+#include "Integral.h"
+#include "FuncForMemControl.h"
+#include "MainFunctions.h"
 
 
 void PushToCommand(control* StackBasePoint, control element)

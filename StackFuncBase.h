@@ -18,6 +18,12 @@ struct count
 	int position;
 };
 
+struct function
+{
+	const char* name;
+	control setting;
+};
+
 //кладёт элемент в стек управления
 void PushToCommand(control* StackBasePoint, control element);
 
@@ -29,3 +35,5 @@ void PushToStack(count* StackBasePoint, count element);
 
 //забирает элемент из исполняемого стека
 double PopFromStack(count* StackBasePoint);
+
+

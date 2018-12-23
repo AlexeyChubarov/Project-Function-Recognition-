@@ -2,6 +2,7 @@
 #include <math.h>
 #include <windows.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include "InternalDefines.h"
 #include "StrFuncBase.h"
@@ -10,78 +11,106 @@
 #include "FuncForRec.h"
 #include "StackFuncBase.h"
 #include "Counter.h"
+#include "Integral.h"
+#include "FuncForMemControl.h"
+#include "MainFunctions.h"
 
-
+double exe_function(double x)
+{
+	return sin(x) - tan(sqr(x) + 2 * x + 4)*tanh(2 * x + 1) + 2 * exp(2) + pow(x, 1.2) + 4 * x - 3;
+}
 
 int main()
 {
-	unsigned *EPage,*p;
-	EPage = (unsigned*)malloc(PageSize);
+	double from,to,step;
+	FILE* InFunction;
 	
-	readln(EPage);
+	int PageSize = 100;
 
-	if (BracketAccordance(EPage) == false)
+	unsigned* EPage = InitEPage(PageSize);
+
+	printf("%p %d\n", EPage, PageSize);
+
+	fopen_s(&InFunction,"function.in", "r+");
+	
+
+	clock_t StartPoint1, StopPoint1, StartPoint2, StopPoint2;
+
+	double d;
+	
+	
+	//freadln(InFunction,&EPage);
+
+	//printf("%d\n", (int)'\t');
+	freadln(InFunction,&EPage,&PageSize);
+	
+	printf("%p %d\n",EPage,PageSize);
+	//BinaryWrite(EPage);
+	
+	printf("\n");
+	writeln(EPage);
+	printf("\n");	
+	
+	if (PostfixTransfer(&EPage, &PageSize, 6) == -1)
 	{
-		fprintf(stderr, "Fatal Error: the discrepancy in the number of opening and closing brackets\n please, try again\n");
-
 		system("pause");
-		//getchar();
 
 		system("cls");
 
 		free(EPage);
+
 		main();
-		return 0;
 	}
-	
-	
-	OddBracketsDeleter(EPage);
 
-	StdTypeOfNumberRecognize(EPage);
-
-	p= StrFormatC(EPage);
-	p= StrFormatMD(EPage);
-	p= StrFormatPM(EPage);
-
-	OddBracketsDeleter(EPage);
-
-	FinalRepalce(EPage,6);
-
-
-	
-	printf("\n");
+	printf("%p %d\n", EPage, PageSize);
 	writeln(EPage);
 	printf("\n");
 
-	/*count exe_stack[2];
-	exe_stack[0].number = 0;
-	exe_stack[0].position = -1;
+	
+	printf("%p %d\n", EPage, PageSize);
+	writeln(EPage);
+	printf("\n");
 
-	PushToStack(exe_stack, {2.5,1});
-	printf("%lf\n\n", PopFromStack(exe_stack));
-	for (int i = 0; i < 2; i++)
-		printf("%lf\t%d\n", exe_stack[i].number, exe_stack[i].position);
+	countstack STACK = CountContrAndConstStack(EPage);
 
-*/	
-	ConstNumber* constant_stack=ConstantStackCreator(EPage);
+	printf("\n%d %d\n",STACK.command,STACK.constant);
+
+	stack_t Stack = recognize(EPage);
+
+	ConstNumber* constant_stack=Stack.constant;
 	
 
-	printf("\nConstantStack\n\n");
-	for (int i = 0; i <= 6; i++)
-		printf("%lf\t%d\n", constant_stack[i].constant, constant_stack[i].position);
+	 control* command_stack = Stack.command;
 
+	 printf("exe Stack %d\n", CountExeStack(command_stack));
+	 
+	 printf("Constant Stack\n");
+	 for (int s = 0; s < STACK.constant+1; s++)
+		 printf("%lf\t%d\n", constant_stack[s].constant, constant_stack[s].position);
 
-	//BinaryWrite(EPage);
+	 printf("Command Stack\n");
+	 for (int s = 0; s < STACK.command+1; s++)
+		 printf("%p\t%d\n", command_stack[s].pointer, command_stack[s].descriptor);
 
-	 control* command_stack = CommandStackCreator(EPage);
+	 scanf_s("%lf %lf", &from, &to);
+	 scanf_s("%lf", &step);
+
 	
-	 printf("\nCommandStack\n\n");
 
-	for (int i = 0; i <= 30; i++)
-	{
-		printf("%p\t%d\n", command_stack[i].pointer,command_stack[i].descriptor);
-	}
+	 StartPoint1 = clock();
+	 d = dIntegral(constant_stack, command_stack, from, to, step);
+	 StopPoint1 = clock();
+	 printf("%lf\n",d );
+	 int result = (StopPoint1 - StartPoint1);
+	 printf("calculation time:\t%d\n\n",result);
 
+	 StartPoint2 = clock();
+	 d = dIntegral(exe_function, from, to, step);
+	 StopPoint2 = clock();
+	 printf("%lf\n", d);
+	 result = (StopPoint2 - StartPoint2);
+	 printf("calculation time:\t%d\n", result);
+	 
 
 	system("pause");
 	return 0;
