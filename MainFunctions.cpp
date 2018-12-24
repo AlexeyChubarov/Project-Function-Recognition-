@@ -33,3 +33,8 @@ stack_t recognize(unsigned* EPage)
 
 	return {command_stack,constant_stack};
 }
+
+double calculate(stack_t stack, double x)
+{
+	return Counter(stack.constant, stack.command, x);
+}

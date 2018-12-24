@@ -92,8 +92,11 @@ int main()
 	 for (int s = 0; s < STACK.command+1; s++)
 		 printf("%p\t%d\n", command_stack[s].pointer, command_stack[s].descriptor);
 
-	 scanf_s("%lf %lf", &from, &to);
-	 scanf_s("%lf", &step);
+	 printf("%lf\n",calculate(Stack,1));
+
+	 printf("%lf\n", exe_function(1));
+	  scanf_s("%lf %lf", &from, &to);
+	  scanf_s("%lf", &step);
 
 	
 
@@ -110,7 +113,7 @@ int main()
 	 printf("%lf\n", d);
 	 result = (StopPoint2 - StartPoint2);
 	 printf("calculation time:\t%d\n", result);
-	 
+	
 
 	system("pause");
 	return 0;
