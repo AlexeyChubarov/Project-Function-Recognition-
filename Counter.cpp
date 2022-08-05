@@ -327,6 +327,10 @@ ConstNumber* ConstantStackCreator(unsigned* StrCurrentAddress,int size)
 	 exe_stack[0].number = 0;
 	 exe_stack[0].position = -1;
 
+	 if (((command_stack)[i].descriptor == -1) and (command_stack[i].pointer == 0x00000000))
+	 {
+		 return constant_stack[i].constant;
+	 }
 	 while (true)
 	 {
 		 if (command_stack[i].descriptor == -1)break;
